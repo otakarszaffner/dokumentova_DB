@@ -2,7 +2,7 @@
 
 ## 1. Přehled
 
-Toto je praktický příklad **dokumentové databáze** (CouchDB), který demonstruje reálný objednávkový systém pro obědů v korporátním prostředí. Systém ukazuje **výhody a nevýhody** dokumentových databází v porovnání se SQL.
+Toto je praktický příklad **dokumentové databáze** (CouchDB), který demonstruje reálný objednávkový systém pro obědy v korporátním prostředí. Systém ukazuje **výhody a nevýhody** dokumentových databází v porovnání se SQL.
 
 ### Téma: Lunch Order Management System
 - **Zaměstnanci** - Mají různé preference a alergeny
@@ -34,9 +34,9 @@ Toto je praktický příklad **dokumentové databáze** (CouchDB), který demons
 - **`type: "employee"`** - Indexování podle typu dokumentu
 - **`dietary_restrictions`** - Flexibilní seznam (může se lišit pro každého)
 - **`allergies`** - Bezpečnostní důvod - nemusí být vyplněno
-- **`favorite_meals`** - Běžné preference - mimo databází by toto byla separátní tabulka!
+- **`favorite_meals`** - Běžné preference - mimo databází by toto byla separátní tabulka
 
-**Demonstrace flexibility:** Různí zaměstnanci mají různé pole. Nový zaměstnanec může mít dodatečná pole bez migrace databáze.
+**Demonstrace flexibility:** Různí zaměstnanci mají různá pole. Nový zaměstnanec může mít dodatečná pole bez migrace databáze.
 
 ---
 
@@ -73,7 +73,7 @@ Toto je praktický příklad **dokumentové databáze** (CouchDB), který demons
 
 ---
 
-### 2.3 Objednávky (Orders) - **DENORMALIZACE!**
+### 2.3 Objednávky (Orders) - **DENORMALIZACE**
 
 ```json
 {
@@ -88,7 +88,7 @@ Toto je praktický příklad **dokumentové databáze** (CouchDB), který demons
   "delivery_date": "2024-05-20",
   "delivery_time": "12:00",
   "status": "delivered",
-  "special_notes": "Bez gluten prosím - má celiakie",
+  "special_notes": "Bez gluten prosím",
   "items": [
     {
       "meal_id": "meal_buddha_bowl",
@@ -122,79 +122,19 @@ V **SQL databázi** bychom měli tabulky:
 
 Abychom dostali jednu objednávku se všemi detaily, museli bychom provést **4-5 JOINů**.
 
-V **CouchDB (dokumentové DB)** máme **VŠE V JEDNOM DOKUMENTU**! To je hlavní výhoda:
-- ✅ Jeden dotaz = všechna data
-- ✅ Bez JOINů - mnohem rychlejší
-- ✅ Atomicitou na úrovni dokumentu - objednávka je buď kompletní, nebo nebyla vytvořena
-- ❌ Ale co když se změní jméno zaměstnance? Musíme aktualizovat všechny jeho objednávky!
-
+V **CouchDB (dokumentové DB)** máme **VŠE V JEDNOM DOKUMENTU** To je hlavní výhoda:
+-  Jeden dotaz = všechna data
+-  Bez JOINů - mnohem rychlejší
+-  Atomicitou na úrovni dokumentu - objednávka je buď kompletní, nebo nebyla vytvořena
+  
+ **Nevýhoda:**
+  - Redundance (duplicita) dat – stejná informace je uložena na mnoha místech.
+  - Složitá modifikace – změna globálního údaje (např. jméno zaměstnance) vyžaduje přepisování mnoha dokumentů (všech jeho objednávek), což popírá výhodu rychlosti.
 ---
 
-## 3. Spuštění
+## 3. Dotazování - Praktické Příklady
 
-### 3.1 Prerequisity
-- Docker a Docker Compose
-- Terminál / PowerShell
-
-### 3.2 Kroky
-
-```bash
-# 1. Přejít do adresáře
-cd Priklad_dokumentove_databaze
-
-# 2. Spustit CouchDB
-docker-compose up -d
-
-# 3. Ověřit, že CouchDB běží
-docker ps
-# Měly byste vidět "couchdb" container
-
-# 4. Čekat 5-10 sekund, až se CouchDB inicializuje
-
-# 5. Importovat data (viz níže)
-```
-
----
-
-## 4. Import Dat
-
-### Metoda A: Pomocí `curl` (Linux/Mac/WSL)
-
-```bash
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -u admin:password \
-  http://localhost:5984/lunch_orders/_bulk_docs \
-  --data-binary @data.json
-```
-
-### Metoda B: Pomocí PowerShell (Windows)
-
-```powershell
-$auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("admin:password"))
-$headers = @{ Authorization = "Basic $auth" }
-$data = Get-Content data.json -Raw
-
-Invoke-WebRequest -Uri "http://localhost:5984/lunch_orders/_bulk_docs" `
-  -Method POST `
-  -Headers $headers `
-  -Body $data `
-  -ContentType "application/json" `
-  -UseBasicParsing
-```
-
-### Metoda C: Přes Fauxton (GUI)
-
-1. Otevřete http://localhost:5984/_utils/
-2. Klikněte "Create Database" → `lunch_orders` → Create
-3. Klikněte na "Import" (horní menu)
-4. Vyberte `data.json` a importujte
-
----
-
-## 5. Dotazování - Praktické Příklady
-
-### 5.1 Mango Query - Všechny objednávky zaměstnance
+### 3.1 Mango Query - Všechny objednávky zaměstnance
 
 ```json
 POST /lunch_orders/_find
@@ -227,11 +167,11 @@ POST /lunch_orders/_find
 }
 ```
 
-**Výhoda:** Jedním dotazem máme všechny informace! V SQL: museli bychom JOIN objednávky, položky, jídla.
+**Výhoda:** Jedním dotazem máme všechny informace. V SQL: museli bychom JOIN objednávky, položky, jídla.
 
 ---
 
-### 5.2 Mango Query - Objednávky s kladnou zpětnou vazbou
+### 3.2 Mango Query - Objednávky s kladnou zpětnou vazbou
 
 ```json
 POST /lunch_orders/_find
@@ -250,14 +190,14 @@ POST /lunch_orders/_find
 }
 ```
 
-**Demonstrace:**
+**Slovníček:**
 - `$exists` - Pole musí existovat
 - `$gte` - Větší nebo rovno (greater than or equal)
 - Vnořené pole - `feedback.rating` - přímý přístup bez JOINu
 
 ---
 
-### 5.3 Mango Query - Zaměstnanci s vegetariánskou preferencí
+### 3.3 Mango Query - Zaměstnanci s vegetariánskou preferencí
 
 ```json
 POST /lunch_orders/_find
@@ -273,7 +213,7 @@ POST /lunch_orders/_find
 
 ---
 
-### 5.4 MapReduce View - Počet objednávek podle oddělení
+### 3.4 MapReduce View - Počet objednávek podle oddělení
 
 ```javascript
 // Design Document: _design/analytics
@@ -308,7 +248,7 @@ GET /lunch_orders/_design/analytics/_view/orders_by_department?group=true
 
 ---
 
-### 5.5 MapReduce View - Celkový objem prodejů
+### 3.5 MapReduce View - Celkový objem prodejů
 
 ```javascript
 // Map
@@ -324,7 +264,7 @@ _sum
 
 ---
 
-## 6. Výhody CouchDB pro Tento Případ
+## 4. Výhody CouchDB (dokumentové DB) pro Tento Případ
 
 | Výhoda | Vysvětlení |
 |--------|-----------|
@@ -337,7 +277,7 @@ _sum
 
 ---
 
-## 7. Nevýhody CouchDB pro Tento Případ
+## 5. Nevýhody CouchDB (dokumentové DB) pro Tento Případ
 
 | Nevýhoda | Problém |
 |----------|---------|
@@ -349,7 +289,7 @@ _sum
 
 ---
 
-## 8. SQL vs CouchDB - Konkrétní Příklad
+## 6. SQL vs CouchDB - Konkrétní Příklad
 
 ### Úloha: Najděte všechny objednávky zaměstnance "Zdenka Simeckova" s feedback
 
@@ -402,34 +342,34 @@ POST /lunch_orders/_find
 ```
 
 **Výhody:**
-- ✅ Jednoduchý dotaz
-- ✅ Všechna data jsou v dokumentu
-- ✅ Jeden dotaz = všechny informace
-- ✅ Lepší čitelnost
+-  Jednoduchý dotaz
+-  Všechna data jsou v dokumentu
+-  Jeden dotaz = všechny informace
+-  Lepší čitelnost
 
 ---
 
-## 9. Kdy Použít CouchDB vs SQL
+## 7. Kdy Použít CouchDB(dokumentové DB) vs SQL
 
-### ✅ Používejte CouchDB když:
+### CouchDB když:
 
-1. Máte **hierarchická a denormalizovaná data** (objednávka s položkami, zaměstnanec s adresou)
-2. **Schéma se mění** - přidáváte nová pole, různé dokumenty mají různou strukturu
-3. Potřebujete **offline synchronizaci** (mobilní aplikace)
+1. Máme **hierarchická a denormalizovaná data** (objednávka s položkami, zaměstnanec s adresou)
+2. **Schéma se mění** - přidáváme nová pole, různé dokumenty mají různou strukturu
+3. Potřebujeme **offline synchronizaci** (mobilní aplikace)
 4. Data jsou primárně **čtena, ne modifikována** (analytics, reporting)
-5. Chcete **horizontální škálování** - replikace mezi servery
+5. Chceme **horizontální škálování** - replikace mezi servery
 
-### ✅ Používejte SQL/Relační DB když:
+### SQL/Relační DB když:
 
-1. Máte **komplexní transakce** - bankovnictví, rezervační systémy
-2. Potřebujete **relační integritu** - cizí klíče, constraints
+1. Máme **komplexní transakce** - bankovnictví, rezervační systémy
+2. Potřebujeme **relační integritu** - cizí klíče, constraints
 3. Data jsou **normalizovaná** - mnoho malých tabulek s JOINy
-4. Vykonáváte **komplexní agregace** - GROUP BY, HAVING, window functions
+4. Vykonáváme **komplexní agregace** - GROUP BY, HAVING, window functions
 5. Aplikace má **silné ACID požadavky** - víceobjednávkové transakce
 
 ---
 
-## 10. Praktické Úkoly - Co Vyzkoušet
+## 8. Praktické Úkoly - Co Vyzkoušet
 
 ### Úkol 1: Najděte všechny objednávky, které nejsou ještě dodány
 
@@ -483,22 +423,22 @@ function(keys, values, rereduce) {
 
 ---
 
-## 11. Shrnutí
+## 9. Shrnutí
 
-Tento příklad demonstruje:
+# Co tento příklad ukazuje
 
-- ✅ **Flexibilní schéma** - Zaměstnanci mají různá pole
-- ✅ **Denormalizaci** - Objednávka obsahuje vše potřebné
-- ✅ **Hierarchické struktury** - Vnořené itemy v objednávce
-- ✅ **Dotazování bez JOINů** - Mango queries jsou jednoduché
-- ✅ **MapReduce agregace** - Pro statistiky
-- ✅ **Realný případ** - Faktické tísnění obědů v korporátu
+- **Flexibilní schéma** - Zaměstnanci mají různá pole
+- **Denormalizaci** - Objednávka obsahuje vše potřebné
+- **Hierarchické struktury** - Vnořené itemy v objednávce
+- **Dotazování bez JOINů** - Mango queries jsou jednoduché
+- **MapReduce agregace** - Pro statistiky
+- **Realný případ** - Faktické tísnění obědů v korporátu
 
 CouchDB je ideální pro **CMS, katalogy, uživatelské profily, objednávkové systémy** s denormalizovanými daty.
 
 ---
 
-## 12. Další Zdroje
+## 10. Další Zdroje
 
 - [CouchDB Dokumentace](https://docs.couchdb.org/)
 - [Mango Query Language](https://docs.couchdb.org/en/stable/api/database/find.html)
