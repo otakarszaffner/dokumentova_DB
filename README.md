@@ -1,5 +1,4 @@
-# dokumentova_DB
-priklad pouziti dokumentove databaze v oblasti obedu
+# Dokumentová databáze
 
 ## Co je dokumentová databáze
 Dokumentová databáze je typ **NoSQL databáze**, která ukládá data ve formě **dokumentů** místo klasických tabulek a řádků jako relační databáze (např. MySQL nebo PostgreSQL).
