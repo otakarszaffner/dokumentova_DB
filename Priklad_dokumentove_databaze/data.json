@@ -1,0 +1,384 @@
+{
+  "docs": [
+    {
+      "_id": "employee_001",
+      "type": "employee",
+      "first_name": "Alena",
+      "last_name": "Novotna",
+      "email": "alena.novotna@company.cz",
+      "department": "IT",
+      "dietary_restrictions": ["bez_gluten"],
+      "allergies": ["arašídy"],
+      "favorite_meals": ["pizza", "kuřecí salát"],
+      "created_date": "2024-01-10",
+      "is_active": true
+    },
+    {
+      "_id": "employee_002",
+      "type": "employee",
+      "first_name": "Petr",
+      "last_name": "Horák",
+      "email": "petr.horak@company.cz",
+      "department": "HR",
+      "dietary_restrictions": ["vegetarián"],
+      "allergies": [],
+      "favorite_meals": ["vegetarian pasta", "Buddha bowl"],
+      "created_date": "2024-02-15",
+      "is_active": true
+    },
+    {
+      "_id": "employee_003",
+      "type": "employee",
+      "first_name": "Marie",
+      "last_name": "Černá",
+      "email": "marie.cerna@company.cz",
+      "department": "Marketing",
+      "dietary_restrictions": [],
+      "allergies": ["mlčo"],
+      "favorite_meals": ["jehněčí maso", "sushi bez tužina"],
+      "created_date": "2024-01-20",
+      "is_active": true
+    },
+    {
+      "_id": "employee_004",
+      "type": "employee",
+      "first_name": "Jan",
+      "last_name": "Svoboda",
+      "email": "jan.svoboda@company.cz",
+      "department": "Finance",
+      "dietary_restrictions": ["bez_cukru"],
+      "allergies": ["vejce"],
+      "favorite_meals": ["grilované kuřecí", "ryba"],
+      "created_date": "2023-12-01",
+      "is_active": true
+    },
+    {
+      "_id": "meal_pizza_margherita",
+      "type": "meal",
+      "name": "Pizza Margherita",
+      "description": "Klasická italská pizza s rajčaty, mozarellou a bazalkou",
+      "category": "hlavní chod",
+      "price": 180,
+      "currency": "CZK",
+      "ingredients": [
+        {"name": "těsto", "allergen": false},
+        {"name": "rajčatový protlak", "allergen": false},
+        {"name": "mozzarella", "allergen": "mlčo"},
+        {"name": "bazalka", "allergen": false},
+        {"name": "olivový olej", "allergen": false}
+      ],
+      "vegetarian": true,
+      "vegan": false,
+      "gluten_free": false,
+      "available_until": "2024-05-31",
+      "popularity_score": 4.8,
+      "estimated_prep_time_minutes": 20
+    },
+    {
+      "_id": "meal_buddha_bowl",
+      "type": "meal",
+      "name": "Buddha Bowl",
+      "description": "Zdravá miska s kvinojou, zeleninou a tahini dresinkem",
+      "category": "hlavní chod",
+      "price": 195,
+      "currency": "CZK",
+      "ingredients": [
+        {"name": "quinoa", "allergen": false},
+        {"name": "syrová zelenina", "allergen": false},
+        {"name": "cizrna", "allergen": false},
+        {"name": "tahini", "allergen": "sezam"},
+        {"name": "citrón", "allergen": false}
+      ],
+      "vegetarian": true,
+      "vegan": true,
+      "gluten_free": true,
+      "available_until": "2024-05-31",
+      "popularity_score": 4.6,
+      "estimated_prep_time_minutes": 15
+    },
+    {
+      "_id": "meal_kurice_s_ryzem",
+      "type": "meal",
+      "name": "Kuřecí prsa s rýží",
+      "description": "Grilovaná kuřecí prsa podávaná s basmati rýží a grilovanou zeleninou",
+      "category": "hlavní chod",
+      "price": 220,
+      "currency": "CZK",
+      "ingredients": [
+        {"name": "kuřecí prs", "allergen": false},
+        {"name": "basmati rýže", "allergen": false},
+        {"name": "paprika", "allergen": false},
+        {"name": "cibule", "allergen": false},
+        {"name": "sůl a koření", "allergen": false}
+      ],
+      "vegetarian": false,
+      "vegan": false,
+      "gluten_free": true,
+      "available_until": "2024-05-31",
+      "popularity_score": 4.7,
+      "estimated_prep_time_minutes": 25
+    },
+    {
+      "_id": "meal_vegetarska_pasta",
+      "type": "meal",
+      "name": "Vegetariánská pasta s rajčaty",
+      "description": "Taliánská pasta s domácím rajčatovým omáčkou a svěžím bazalkou",
+      "category": "hlavní chod",
+      "price": 165,
+      "currency": "CZK",
+      "ingredients": [
+        {"name": "pasta", "allergen": "gluten"},
+        {"name": "rajčata", "allergen": false},
+        {"name": "česnek", "allergen": false},
+        {"name": "bazalka", "allergen": false},
+        {"name": "parmazán", "allergen": "mlčo"}
+      ],
+      "vegetarian": true,
+      "vegan": false,
+      "gluten_free": false,
+      "available_until": "2024-05-31",
+      "popularity_score": 4.5,
+      "estimated_prep_time_minutes": 18
+    },
+    {
+      "_id": "dessert_tiramisu",
+      "type": "meal",
+      "name": "Tiramisu",
+      "description": "Tradiční italský dezert s maskarpone a kávou",
+      "category": "dezert",
+      "price": 85,
+      "currency": "CZK",
+      "ingredients": [
+        {"name": "mascarpone", "allergen": "mlčo"},
+        {"name": "vejce", "allergen": "vejce"},
+        {"name": "káva", "allergen": false},
+        {"name": "kakao", "allergen": false}
+      ],
+      "vegetarian": true,
+      "vegan": false,
+      "gluten_free": false,
+      "available_until": "2024-05-31",
+      "popularity_score": 4.9,
+      "estimated_prep_time_minutes": 5
+    },
+    {
+      "_id": "drink_iced_tea",
+      "type": "meal",
+      "name": "Ledový čaj",
+      "description": "Osvěžující ledový čaj s citrónem a mátu",
+      "category": "nápoj",
+      "price": 40,
+      "currency": "CZK",
+      "ingredients": [
+        {"name": "černý čaj", "allergen": false},
+        {"name": "citrón", "allergen": false},
+        {"name": "máta", "allergen": false},
+        {"name": "led", "allergen": false}
+      ],
+      "vegetarian": true,
+      "vegan": true,
+      "gluten_free": true,
+      "available_until": "2024-05-31",
+      "popularity_score": 4.4,
+      "estimated_prep_time_minutes": 3
+    },
+    {
+      "_id": "order_2024_05_20_001",
+      "type": "order",
+      "order_date": "2024-05-20",
+      "order_time": "11:15",
+      "employee_id": "employee_001",
+      "employee_name": "Alena Novotna",
+      "employee_email": "alena.novotna@company.cz",
+      "employee_department": "IT",
+      "delivery_date": "2024-05-20",
+      "delivery_time": "12:00",
+      "status": "delivered",
+      "special_notes": "Bez gluten prosím - má celiakie",
+      "items": [
+        {
+          "meal_id": "meal_buddha_bowl",
+          "meal_name": "Buddha Bowl",
+          "quantity": 1,
+          "price_per_unit": 195,
+          "special_requests": "Bez sezamu - alergik"
+        },
+        {
+          "meal_id": "drink_iced_tea",
+          "meal_name": "Ledový čaj",
+          "quantity": 1,
+          "price_per_unit": 40,
+          "special_requests": ""
+        }
+      ],
+      "total_price": 235,
+      "currency": "CZK",
+      "payment_method": "corporate_account",
+      "payment_status": "paid",
+      "feedback": {
+        "rating": 5,
+        "comment": "Výborný Buddha bowl! Bez problémů s alergií.",
+        "would_order_again": true
+      }
+    },
+    {
+      "_id": "order_2024_05_20_002",
+      "type": "order",
+      "order_date": "2024-05-20",
+      "order_time": "11:20",
+      "employee_id": "employee_002",
+      "employee_name": "Petr Horák",
+      "employee_email": "petr.horak@company.cz",
+      "employee_department": "HR",
+      "delivery_date": "2024-05-20",
+      "delivery_time": "12:00",
+      "status": "delivered",
+      "special_notes": "Vegetarián - prosím žádné maso",
+      "items": [
+        {
+          "meal_id": "meal_vegetarska_pasta",
+          "meal_name": "Vegetariánská pasta s rajčaty",
+          "quantity": 1,
+          "price_per_unit": 165,
+          "special_requests": ""
+        },
+        {
+          "meal_id": "dessert_tiramisu",
+          "meal_name": "Tiramisu",
+          "quantity": 1,
+          "price_per_unit": 85,
+          "special_requests": ""
+        }
+      ],
+      "total_price": 250,
+      "currency": "CZK",
+      "payment_method": "corporate_account",
+      "payment_status": "paid",
+      "feedback": {
+        "rating": 4,
+        "comment": "Dobré, ale pasta byla trochu horká.",
+        "would_order_again": true
+      }
+    },
+    {
+      "_id": "order_2024_05_20_003",
+      "type": "order",
+      "order_date": "2024-05-20",
+      "order_time": "11:30",
+      "employee_id": "employee_003",
+      "employee_name": "Marie Černá",
+      "employee_email": "marie.cerna@company.cz",
+      "employee_department": "Marketing",
+      "delivery_date": "2024-05-20",
+      "delivery_time": "12:00",
+      "status": "delivered",
+      "special_notes": "Bez mlčo! Alergie na mléčné produkty",
+      "items": [
+        {
+          "meal_id": "meal_kurice_s_ryzem",
+          "meal_name": "Kuřecí prsa s rýží",
+          "quantity": 1,
+          "price_per_unit": 220,
+          "special_requests": "Grilovaná s bylinkami"
+        }
+      ],
+      "total_price": 220,
+      "currency": "CZK",
+      "payment_method": "corporate_account",
+      "payment_status": "paid",
+      "feedback": {
+        "rating": 5,
+        "comment": "Perfektní! Bez problémů s alergií.",
+        "would_order_again": true
+      }
+    },
+    {
+      "_id": "order_2024_05_21_001",
+      "type": "order",
+      "order_date": "2024-05-21",
+      "order_time": "10:45",
+      "employee_id": "employee_004",
+      "employee_name": "Jan Svoboda",
+      "employee_email": "jan.svoboda@company.cz",
+      "employee_department": "Finance",
+      "delivery_date": "2024-05-21",
+      "delivery_time": "12:00",
+      "status": "in_preparation",
+      "special_notes": "Bez cukru, bez vejce",
+      "items": [
+        {
+          "meal_id": "meal_kurice_s_ryzem",
+          "meal_name": "Kuřecí prsa s rýží",
+          "quantity": 1,
+          "price_per_unit": 220,
+          "special_requests": "Bez cukru v omáčce"
+        },
+        {
+          "meal_id": "drink_iced_tea",
+          "meal_name": "Ledový čaj",
+          "quantity": 1,
+          "price_per_unit": 40,
+          "special_requests": ""
+        }
+      ],
+      "total_price": 260,
+      "currency": "CZK",
+      "payment_method": "corporate_account",
+      "payment_status": "pending",
+      "feedback": null
+    },
+    {
+      "_id": "order_2024_05_21_002",
+      "type": "order",
+      "order_date": "2024-05-21",
+      "order_time": "11:00",
+      "employee_id": "employee_001",
+      "employee_name": "Alena Novotna",
+      "employee_email": "alena.novotna@company.cz",
+      "employee_department": "IT",
+      "delivery_date": "2024-05-21",
+      "delivery_time": "12:00",
+      "status": "ordered",
+      "special_notes": "Bez gluten - celiakie",
+      "items": [
+        {
+          "meal_id": "meal_pizza_margherita",
+          "meal_name": "Pizza Margherita",
+          "quantity": 1,
+          "price_per_unit": 180,
+          "special_requests": "Bezglutenu prosím!"
+        }
+      ],
+      "total_price": 180,
+      "currency": "CZK",
+      "payment_method": "corporate_account",
+      "payment_status": "pending",
+      "feedback": null
+    },
+    {
+      "_id": "statistics_2024_05",
+      "type": "statistics",
+      "month": "2024-05",
+      "total_orders": 5,
+      "total_revenue": 1145,
+      "currency": "CZK",
+      "average_order_value": 229,
+      "most_popular_meal": "Buddha Bowl",
+      "most_popular_meal_id": "meal_buddha_bowl",
+      "orders_by_department": {
+        "IT": 2,
+        "HR": 1,
+        "Marketing": 1,
+        "Finance": 1
+      },
+      "dietary_restrictions_summary": {
+        "bez_gluten": 1,
+        "vegetarián": 1,
+        "bez_cukru": 1,
+        "bez_mlčo": 1
+      },
+      "average_rating": 4.75,
+      "repeat_customer_count": 2
+    }
+  ]
+}
