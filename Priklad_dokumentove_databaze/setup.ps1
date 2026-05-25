@@ -63,22 +63,22 @@ function Invoke-CouchDBRequest {
 }
 
 # SETUP
-Write-Header "Obed Order System - Setup"
+Write-Header "Obedy - Setup"
 
-# 1. Oveleneni pripojeni
-Write-Host "Overenavam pripojeni k CouchDB..." -ForegroundColor $colors.Info
+# 1. Overeni pripojeni
+Write-Host "Overuju pripojeni k CouchDB..." -ForegroundColor $colors.Info
 try {
     $response = Invoke-WebRequest -Uri $CouchDBUrl -ErrorAction Stop -UseBasicParsing
     Write-Host "OK: Pripojeno k CouchDB`n" -ForegroundColor $colors.Success
 }
 catch {
     Write-Host "CHYBA: Nelze se pripojit k CouchDB!" -ForegroundColor $colors.Error
-    Write-Host "   Ujistete se, ze je spusten: docker-compose up -d" -ForegroundColor $colors.Warning
+    Write-Host "  Je docker up?" -ForegroundColor $colors.Warning
     exit 1
 }
 
 # 2. Smazani stare databaze
-Write-Host "Mazuji starou databazi (pokud existuje)..." -ForegroundColor $colors.Info
+Write-Host "Mazu starou databazi (pokud existuje)..." -ForegroundColor $colors.Info
 $response = Invoke-CouchDBRequest -Method DELETE -Endpoint "/$DbName"
 Write-Host "OK`n" -ForegroundColor $colors.Success
 
@@ -104,7 +104,7 @@ if (-not (Test-Path $dataFile)) {
     exit 1
 }
 
-Write-Host "Ctam data z: $dataFile" -ForegroundColor $colors.Info
+Write-Host "Cteni data z: $dataFile" -ForegroundColor $colors.Info
 $jsonData = Get-Content $dataFile -Raw -Encoding UTF8
 
 Write-Host "Importuji dokumenty..." -ForegroundColor $colors.Info
@@ -135,8 +135,8 @@ else {
     exit 1
 }
 
-# 5. Oveleneni dat
-Write-Header "KROK 3: Overeneni Dat"
+# 5. Overeni dat
+Write-Header "KROK 3: Overeni Dat"
 
 Write-Host "Kontroluji pocet dokumentu..." -ForegroundColor $colors.Info
 $response = Invoke-CouchDBRequest -Method GET -Endpoint "/$DbName"
@@ -149,12 +149,12 @@ Write-Host "   Pocet dokumentu: $($dbInfo.doc_count)" -ForegroundColor $colors.I
 Write-Header "Setup Uspesne Dokoncen!"
 
 Write-Host "Dalsi kroky:" -ForegroundColor $colors.Info
-Write-Host "  1. Otevrite Fauxton v prohlizeci:" -ForegroundColor $colors.Info
+Write-Host "  1. Adresa:" -ForegroundColor $colors.Info
 Write-Host "     http://localhost:5984/_utils/" -ForegroundColor $colors.Success
 Write-Host ""
 Write-Host "  2. Prihlaseni:" -ForegroundColor $colors.Info
 Write-Host "     Jmeno: admin" -ForegroundColor $colors.Success
 Write-Host "     Heslo: password" -ForegroundColor $colors.Success
 Write-Host ""
-Write-Host "  3. Vyberte databazi: lunch_orders" -ForegroundColor $colors.Info
+Write-Host "  3. Databaze: lunch_orders" -ForegroundColor $colors.Info
 Write-Host ""

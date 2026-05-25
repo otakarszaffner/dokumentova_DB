@@ -18,9 +18,9 @@ Toto je praktický příklad **dokumentové databáze** (CouchDB), který demons
 {
   "_id": "employee_001",
   "type": "employee",
-  "first_name": "Alena",
-  "last_name": "Novotna",
-  "email": "alena.novotna@company.cz",
+  "first_name": "Zdenka",
+  "last_name": "Simeckova",
+  "email": "zdenka.simeckova@company.cz",
   "department": "IT",
   "dietary_restrictions": ["bez_gluten"],
   "allergies": ["arašídy"],
@@ -82,8 +82,8 @@ Toto je praktický příklad **dokumentové databáze** (CouchDB), který demons
   "order_date": "2024-05-20",
   "order_time": "11:15",
   "employee_id": "employee_001",
-  "employee_name": "Alena Novotna",              // DENORMALIZOVANÉ
-  "employee_email": "alena.novotna@company.cz", // DENORMALIZOVANÉ
+  "employee_name": "Zdenka Simeckova",              // DENORMALIZOVANÉ
+  "employee_email": "zdenka.simeckova@company.cz", // DENORMALIZOVANÉ
   "employee_department": "IT",                  // DENORMALIZOVANÉ
   "delivery_date": "2024-05-20",
   "delivery_time": "12:00",
@@ -351,7 +351,7 @@ _sum
 
 ## 8. SQL vs CouchDB - Konkrétní Příklad
 
-### Úloha: Najděte všechny objednávky zaměstnance "Alena Novotna" s feedback
+### Úloha: Najděte všechny objednávky zaměstnance "Zdenka Simeckova" s feedback
 
 ### SQL řešení:
 
@@ -375,7 +375,7 @@ LEFT JOIN order_items oi ON o.id = oi.order_id
 LEFT JOIN meals m ON oi.meal_id = m.id
 LEFT JOIN feedback f ON o.id = f.order_id
 WHERE o.employee_id = (
-  SELECT id FROM employees WHERE name = 'Alena Novotna'
+  SELECT id FROM employees WHERE name = 'Zdenka Simeckova'
 )
 AND f.rating IS NOT NULL;
 ```
@@ -392,7 +392,7 @@ POST /lunch_orders/_find
 {
   "selector": {
     "type": "order",
-    "employee_name": "Alena Novotna",
+    "employee_name": "Zdenka Simeckova",
     "feedback": {
       "$exists": true,
       "$ne": null
