@@ -167,7 +167,7 @@ POST /lunch_orders/_find
 }
 ```
 
-**Výhoda:** Jedním dotazem máme všechny informace. V SQL: museli bychom JOIN objednávky, položky, jídla.
+**Výhoda:** Jedním dotazem máme všechny informace. V SQL: bychom museli JOIN objednávky, položky, jídla.
 
 ---
 
@@ -190,7 +190,7 @@ POST /lunch_orders/_find
 }
 ```
 
-**Slovníček:**
+**"Slovníček:"**
 - `$exists` - Pole musí existovat
 - `$gte` - Větší nebo rovno (greater than or equal)
 - Vnořené pole - `feedback.rating` - přímý přístup bez JOINu
@@ -284,7 +284,7 @@ _sum
 | **Denormalizace = redundance** | Pokud se jméno zaměstnance změní, musíme aktualizovat všechny jeho objednávky |
 | **Bez JOINů** | Pokud potřebujeme složité analýzy přes více entit, je to komplikované |
 | **Omezené transakce** | ACID na úrovni jednoho dokumentu - víceobjednávková transakce by byla problém |
-| **Integrity** | Nic neumožňuje smazat zaměstnance, pokud na něj odkazují objednávky |
+| **Integrity** | Chybí referenční integrita (cizí klíče). Databáze dovolí smazat dokument zaměstnance, i když na něj stále odkazují starší objednávky. |
 | **Disk space** | Redundance zabírá více místa |
 
 ---
@@ -296,28 +296,13 @@ _sum
 ### SQL řešení:
 
 ```sql
-SELECT 
-  o._id,
-  o.order_date,
-  o.status,
-  ARRAY_AGG(
-    JSON_BUILD_OBJECT(
-      'meal_id', oi.meal_id,
-      'meal_name', m.name,
-      'quantity', oi.quantity,
-      'price', oi.price_per_unit
-    )
-  ) as items,
-  f.rating,
-  f.comment
+SELECT o.id, o.order_date, e.first_name, e.last_name, m.name, f.rating
 FROM orders o
-LEFT JOIN order_items oi ON o.id = oi.order_id
-LEFT JOIN meals m ON oi.meal_id = m.id
+JOIN employees e ON o.employee_id = e.id
+JOIN order_items oi ON o.id = oi.order_id
+JOIN meals m ON oi.meal_id = m.id
 LEFT JOIN feedback f ON o.id = f.order_id
-WHERE o.employee_id = (
-  SELECT id FROM employees WHERE name = 'Zdenka Simeckova'
-)
-AND f.rating IS NOT NULL;
+WHERE e.last_name = 'Simeckova' AND f.rating IS NOT NULL;
 ```
 
 **Problémy:**
@@ -404,21 +389,15 @@ POST /lunch_orders/_find
 Zde byste měli vytvořit MapReduce view:
 
 ```javascript
-// Map
+// Map funkce
 function(doc) {
   if (doc.type === 'meal' && doc.popularity_score) {
     emit(null, doc.popularity_score);
   }
 }
 
-// Reduce
-function(keys, values, rereduce) {
-  return {
-    avg: Math.round(sum(values) / values.length * 10) / 10,
-    count: values.length,
-    total: sum(values)
-  };
-}
+// Reduce funkce (vestavěna funkce CouchDB)
+_stats
 ```
 
 ---
@@ -432,7 +411,7 @@ function(keys, values, rereduce) {
 - **Hierarchické struktury** - Vnořené itemy v objednávce
 - **Dotazování bez JOINů** - Mango queries jsou jednoduché
 - **MapReduce agregace** - Pro statistiky
-- **Realný případ** - Faktické tísnění obědů v korporátu
+- **Realný případ** - Správa a objednávání obědů v korporátním prostředí
 
 CouchDB je ideální pro **CMS, katalogy, uživatelské profily, objednávkové systémy** s denormalizovanými daty.
 
