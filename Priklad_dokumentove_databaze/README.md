@@ -2,7 +2,7 @@
 
 ## 1. Přehled
 
-Toto je praktický příklad **dokumentové databáze** (CouchDB), který demonstruje reálný objednávkový systém pro obědy v korporátním prostředí. Systém ukazuje **výhody a nevýhody** dokumentových databází v porovnání se SQL.
+Toto je praktický příklad **dokumentové databáze** (CouchDB), který demonstruje reálný objednávkový systém pro obědy v korporátním prostředí. Systém ukazuje **výhody a nevýhody** dokumentových databází v porovnání s SQL.
 
 ### Téma: Lunch Order Management System
 - **Zaměstnanci** - Mají různé preference a alergeny
